@@ -34,7 +34,13 @@ class Wisata_model extends CI_Model {
     public function wisata( $id = NULL, $start = NULL, $end = NULL )
     {
         $this->db->select( $this->_table . '.*' );
+        $this->db->select( 'kategori.nama AS kategori' );
         if( $id ) $this->db->where( $this->_table . '.id', $id);
+        $this->db->join(
+            'kategori',
+            'kategori.id = ' . $this->_table . '.kategori_id',
+            'join'
+        );
         return $this->db->get( $this->_table );
     }
 

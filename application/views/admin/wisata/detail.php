@@ -44,6 +44,11 @@
                   <?= $data->keterangan ?>
                 </div>
               </div>
+              <div class="card">
+                <div class="card-body">
+                  <a href="<?= $data->map ?>" class="btn btn-sm btn-primary">Lihat di Peta</a>
+                </div>
+              </div>
             </div>
           </div>
         </div>

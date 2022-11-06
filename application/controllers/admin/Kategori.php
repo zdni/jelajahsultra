@@ -22,14 +22,17 @@ class Kategori extends Admin_Controller {
     public function tambah()
     {
         $this->form_validation->set_rules('nama', 'Nama Kategori Wisata', 'required');
+        $this->form_validation->set_rules('deskripsi', 'Deskripsi Kategori Wisata', 'required');
 
         $alert = 'error';
         $message = 'Gagal Menambah Data Kategori Wisata Baru! <br> Silahkan isi semua inputan!';
         if ( $this->form_validation->run() )
         {
             $nama = $this->input->post('nama');
+            $deskripsi = $this->input->post('deskripsi');
 
             $data['nama'] = $nama;
+            $data['deskripsi'] = $deskripsi;
         
             if( $this->kategori_model->tambah( $data ) )
             {
@@ -48,6 +51,7 @@ class Kategori extends Admin_Controller {
     public function ubah()
     {
         $this->form_validation->set_rules('nama', 'Nama Kategori Wisata', 'required');
+        $this->form_validation->set_rules('deskripsi', 'Deskripsi Kategori Wisata', 'required');
 
         $alert = 'error';
         $message = 'Gagal Mengubah Data Kategori Wisata Baru! <br> Silahkan isi semua inputan!';
@@ -55,8 +59,10 @@ class Kategori extends Admin_Controller {
         {
             $id = $this->input->post('id');
             $nama = $this->input->post('nama');
+            $deskripsi = $this->input->post('deskripsi');
 
             $data['nama'] = $nama;
+            $data['deskripsi'] = $deskripsi;
         
             if( $this->kategori_model->ubah( $id, $data ) )
             {

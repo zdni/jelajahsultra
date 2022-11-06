@@ -49,6 +49,10 @@
                               <textarea name="keterangan" rows="10" id="keterangan" class="form-control" required></textarea>
                             </div>
                             <div class="form-group">
+                              <label for="">URL Map</label>
+                              <textarea name="map" rows="2" id="map" class="form-control" required></textarea>
+                            </div>
+                            <div class="form-group">
                                 <select name="kategori_id" id="kategori_id" class="form-control">
                                     <?php foreach ($kategori as $kat) { ?>
                                         <option value="<?= $kat->id ?>"><?= $kat->nama ?></option>
@@ -123,6 +127,10 @@
                                       <div class="form-group">
                                         <label for="">Keterangan</label>
                                         <textarea name="keterangan" rows="10" id="keterangan" class="form-control" required><?= $data->keterangan ?></textarea>
+                                      </div>
+                                      <div class="form-group">
+                                        <label for="">URL Map</label>
+                                        <textarea name="map" rows="2" id="map" class="form-control" required><?= $data->map ?></textarea>
                                       </div>
                                       <div class="form-group">
                                           <select name="kategori_id" id="kategori_id" class="form-control">

@@ -30,6 +30,7 @@ class Wisata extends Admin_Controller {
         $this->form_validation->set_rules('lokasi', 'Lokasi', 'required');
         $this->form_validation->set_rules('fasilitas', 'Fasilitas', 'required');
         $this->form_validation->set_rules('keterangan', 'Keterangan', 'required');
+        $this->form_validation->set_rules('map', 'Map', 'required');
 
         $alert = 'error';
         $message = 'Gagal Menambah Data wisata Baru! <br> Silahkan isi semua inputan!';
@@ -41,6 +42,7 @@ class Wisata extends Admin_Controller {
             $fasilitas = $this->input->post('fasilitas');
             $keterangan = $this->input->post('keterangan');
             $kategori_id = $this->input->post('kategori_id');
+            $map = $this->input->post('map');
 
             $data['nama'] = $nama;
             $data['jam_operasional'] = $jam_operasional;
@@ -48,6 +50,7 @@ class Wisata extends Admin_Controller {
             $data['fasilitas'] = $fasilitas;
             $data['keterangan'] = $keterangan;
             $data['kategori_id'] = $kategori_id;
+            $data['map'] = $map;
         
             if($_FILES['image']['name']){
 				$uploaded_foto = $this->upload_image( 'wisata' . time() );
@@ -85,6 +88,7 @@ class Wisata extends Admin_Controller {
         $this->form_validation->set_rules('lokasi', 'Lokasi', 'required');
         $this->form_validation->set_rules('fasilitas', 'Fasilitas', 'required');
         $this->form_validation->set_rules('keterangan', 'Keterangan', 'required');
+        $this->form_validation->set_rules('map', 'Map', 'required');
 
         $alert = 'error';
         $message = 'Gagal Mengubah Data Wisata Baru! <br> Silahkan isi semua inputan!';
@@ -97,6 +101,7 @@ class Wisata extends Admin_Controller {
             $fasilitas = $this->input->post('fasilitas');
             $keterangan = $this->input->post('keterangan');
             $kategori_id = $this->input->post('kategori_id');
+            $map = $this->input->post('map');
 
             $data['nama'] = $nama;
             $data['jam_operasional'] = $jam_operasional;
@@ -104,6 +109,7 @@ class Wisata extends Admin_Controller {
             $data['fasilitas'] = $fasilitas;
             $data['keterangan'] = $keterangan;
             $data['kategori_id'] = $kategori_id;
+            $data['map'] = $map;
         
             if($_FILES['image']['name']){
 				$uploaded_foto = $this->upload_image( 'wisata' . time() );

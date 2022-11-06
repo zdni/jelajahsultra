@@ -51,6 +51,9 @@
           </div>
         </div>
 
-        <div class="mt-30 border-top-light"></div>
+        <div class="pt-30 mt-30 border-top-light"></div>
+
+        <a href="<?= $data->map ?>" target="_blank" class="button -md -blue-1 bg-blue-1-05 text-blue-1">Lihat di Peta</a>
+
       </div>
     </section>

@@ -32,6 +32,10 @@
                               <label for="">Nama</label>
                               <input type="text" class="form-control" name="nama" id="nama">
                             </div>
+                            <div class="form-group">
+                              <label for="">Deskripsi</label>
+                              <textarea name="deskripsi" id="deskripsi" class="form-control"></textarea>
+                            </div>
                           </div>
                           <div class="modal-footer justify-content-between">
                             <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Batal</button>
@@ -47,6 +51,7 @@
                     <thead>
                       <th>No.</th>
                       <th>Kategori</th>
+                      <th>Deskripsi</th>
                       <th>Aksi</th>
                     </thead>
                     <tbody>
@@ -54,6 +59,7 @@
                         <tr>
                           <td><?= $number ?></td>
                           <td><?= $data->nama ?></td>
+                          <td><?= $data->deskripsi ?></td>
                           <td>
                             <button class="btn btn-sm btn-outline-primary" type="button" data-toggle="modal" data-target="#modal-ubah-kategori-<?= $data->id ?>">Ubah</button>
                             <div class="modal fade" id="modal-ubah-kategori-<?= $data->id ?>">
@@ -71,6 +77,10 @@
                                       <div class="form-group">
                                         <label for="">Nama</label>
                                         <input type="text" class="form-control" name="nama" id="nama" value="<?= $data->nama ?>">
+                                      </div>
+                                      <div class="form-group">
+                                        <label for="">Deskripsi</label>
+                                        <textarea name="deskripsi" id="deskripsi" class="form-control"><?= $data->deskripsi ?></textarea>
                                       </div>
                                     </div>
                                     <div class="modal-footer justify-content-between">
