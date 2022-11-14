@@ -1,0 +1,8 @@
+IP/jelajah.sultra/api/
+
+    ambilSemuaKategori              => semua kategori
+    ambilKategori                   => kategori berdasarkan id
+    ambilSemuaWisata                => semua wisata
+    ambilWisata                     => wisata berdasarkan id
+    ambilWisataBerdasarkanKategori  => wisata berdasarkan kategori id
+    notsonaive                      => algo, membutuhkan kategori dan keyword
