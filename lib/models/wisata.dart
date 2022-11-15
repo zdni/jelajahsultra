@@ -1,6 +1,6 @@
 class Wisata {
   int id, kategoriId;
-  String nama, jamOperasional, fasilitas, lokasi, keterangan, image, kategori;
+  String nama, jamOperasional, fasilitas, lokasi, keterangan, image, kategori, map;
 
   Wisata({
     required this.id,
@@ -12,5 +12,6 @@ class Wisata {
     required this.keterangan,
     required this.image,
     required this.kategori,
+    required this.map,
   });
 }

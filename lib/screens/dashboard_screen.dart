@@ -70,7 +70,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
-    var urlPathUpload = 'http://192.168.100.188/jelajah.sultra/uploads/wisata/';
+    var urlPathUpload = 'http://192.168.100.188/jelajahsultra/uploads/wisata/';
     
     final allToursProvider = Provider.of<Tours>(context);
     final allCategoriesProvider = Provider.of<Categories>(context);
@@ -271,7 +271,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     itemCount: categories.length,
                     itemBuilder: (context, index) {
                       return InkWell(
-                        onTap: () => Navigator.pushNamed(context, CategoryScreen.routeName),
+                        onTap: () => Navigator.pushNamed(context, CategoryScreen.routeName, arguments: categories[index].id),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jelajahsultra/screens/category_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../models/wisata.dart';
 import '../providers/tours.dart';
@@ -45,7 +46,7 @@ class _DetailScreenState extends State<DetailScreen> {
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
-    var urlPathUpload = 'http://192.168.100.188/jelajah.sultra/uploads/wisata/';
+    var urlPathUpload = 'http://192.168.100.188/jelajahsultra/uploads/wisata/';
 
     final allToursProvider = Provider.of<Tours>(context);
 
@@ -215,6 +216,35 @@ class _DetailScreenState extends State<DetailScreen> {
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      InkWell(
+                        onTap: () async {
+                          Uri url = Uri.parse(tours[0].map);
+                          if (!await launchUrl(url)) {
+                            throw 'Could not launch $url';
+                          }
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.only(left: 25),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.0),
+                            border: Border.all(
+                              color: const Color.fromRGBO(3, 169, 251, 1.0)
+                            ),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 15,
+                            vertical: 10,
+                          ),
+                          child: Text(
+                            'Buka di Map',
+                            style: GoogleFonts.getFont(
+                              'Quicksand',
+                              fontSize: 14,
                             ),
                           ),
                         ),

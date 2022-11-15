@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:jelajahsultra/screens/about_screen.dart';
 import 'package:jelajahsultra/screens/dashboard_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -96,6 +97,34 @@ class HomeScreen extends StatelessWidget {
                 color: Colors.white,
                 fontWeight: FontWeight.w500,
                 fontSize: 12,
+              ),
+            ),
+            const SizedBox(height: 8),
+            InkWell(
+              onTap: () => Navigator.pushNamed(context, AboutScreen.routeName),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: Icon(
+                      Icons.info_outline_rounded,
+                      color: Colors.white,
+                      size: 18,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    'Tentang Aplikasi',
+                    style: GoogleFonts.getFont(
+                      'Quicksand',
+                      fontSize: 14.0,
+                      color: Colors.white,
+                    ),
+                  ),
+                ]
               ),
             ),
             const SizedBox(height: 25),

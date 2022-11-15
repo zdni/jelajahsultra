@@ -7,8 +7,9 @@ import 'package:http/http.dart' as http;
 import '../models/wisata.dart';
 
 class Tours with ChangeNotifier {
-  var urlAPI = 'http://192.168.100.188/jelajah.sultra/api/';
+  var urlAPI = 'http://192.168.100.188/jelajahsultra/api/';
   static List<Wisata> _allWisata = [];
+  String executionTime = '';
 
   List<Wisata> get allWisata => _allWisata;
 
@@ -38,7 +39,8 @@ class Tours with ChangeNotifier {
           lokasi: data?['lokasi'], 
           keterangan: data?['keterangan'], 
           image: data?['image'],
-          kategori: data?['kategori']
+          kategori: data?['kategori'],
+          map: data?['map'],
         )
       );
     }
@@ -67,7 +69,8 @@ class Tours with ChangeNotifier {
           lokasi: data?['lokasi'], 
           keterangan: data?['keterangan'], 
           image: data?['image'],
-          kategori: data?['kategori']
+          kategori: data?['kategori'],
+          map: data?['map'],
         )
       );
     }
@@ -95,6 +98,7 @@ class Tours with ChangeNotifier {
           lokasi: data?['lokasi'], 
           keterangan: data?['keterangan'], 
           image: data?['image'],
+          map: data?['map'],
           kategori: data?['kategori']
         )
       );
@@ -104,13 +108,13 @@ class Tours with ChangeNotifier {
   Future<void> notsonaive(String keyword, String kategoriId) async {
     Uri url = Uri.parse('${urlAPI}notsonaive?keyword=$keyword&kategori=$kategoriId');
     // Uri url = Uri.parse('${urlAPI}notsonaive?keyword=toro&kategori=');
-    print(url);
     
     var resultGetData = await http.get(url);
     var dataResponse = json.decode(resultGetData.body) as Map<String, dynamic>;
-    print(dataResponse);
     var arrayLength = dataResponse['data']?.length ?? 0;
+    
     _allWisata = [];
+    executionTime = dataResponse['execution_time'].toString();
 
     for (var i = 0; i < arrayLength; i++) {
       var data = dataResponse["data"]?[i];
@@ -124,6 +128,7 @@ class Tours with ChangeNotifier {
           lokasi: data?['lokasi'], 
           keterangan: data?['keterangan'], 
           image: data?['image'],
+          map: data?['map'],
           kategori: data?['kategori']
         )
       );
