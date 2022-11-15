@@ -41,6 +41,7 @@ class Categories with ChangeNotifier {
   }
 
   Future<void> getKategori(String kategoriId) async {
+    // Uri url = Uri.parse('${urlAPI}ambilKategori/100');
     Uri url = Uri.parse('${urlAPI}ambilKategori/$kategoriId');
 
     var resultGetData = await http.get(url);
