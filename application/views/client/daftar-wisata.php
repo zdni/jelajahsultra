@@ -7,12 +7,12 @@
                 <div class="sidebar__item -no-border">
                   <h5 class="text-18 fw-500 mb-10">Kategori</h5>
                   <div class="sidebar-checkbox">
-                    <?php foreach ($kategori as $value) { ?>
+                    <?php $index = 0; foreach ($kategori as $value) { ?>
                       <div class="row y-gap-10 items-center justify-between">
                         <div class="col-auto">
                           <div class="d-flex items-center">
                             <div class="form-checkbox ">
-                              <input type="checkbox" value="<?= $value->id ?>" name="kategori_id[]" id="kategori_id[]">
+                              <input type="checkbox" value="<?= $value->id ?>" name="kategori_id[]" id="kategori_id[]" class="input-checkbox-<?= $value->id ?>">
                               <div class="form-checkbox__mark">
                                 <div class="form-checkbox__icon icon-check"></div>
                               </div>
@@ -21,12 +21,22 @@
                           </div>
                         </div>
                       </div>
+                      <?php if( $index < count($kategori_id) ): ?>
+                        <?php if( $value->id == $kategori_id[$index] ):
+                          $index++;  
+                        ?>
+                          <script>
+                            var inputCheckbox = document.getElementsByClassName('input-checkbox-<?= $value->id ?>')[0];
+                            inputCheckbox.click();
+                          </script>
+                        <?php endif; ?>
+                      <?php endif; ?>
                     <?php } ?>
                   </div>
                 </div>
                 <div class="mt-30 sidebar__item -no-border">
                   <div class="single-field relative d-flex items-center py-10">
-                    <input class="pl-50 border-light text-dark-1 h-50 rounded-8" type="text" placeholder="e.g. Pantai Toronipa" name="keyword" id="keyword">
+                    <input class="pl-50 border-light text-dark-1 h-50 rounded-8" type="text" placeholder="e.g. Pantai Toronipa" name="keyword" id="keyword" value="<?= $keyword ?>">
                     <button class="absolute d-flex items-center h-full">
                       <i class="icon-search text-20 px-15 text-dark-1"></i>
                     </button>
@@ -48,7 +58,9 @@
           <div class="col-xl-9 col-lg-8">
             <div class="row y-gap-10 items-center justify-between">
               <div class="col-auto">
-                <!-- <div class="text-18"><span class="fw-500">3,269 properties</span> in Europe</div> -->
+                <?php if( $execution_time != 0 ): ?>
+                <div class="text-18">Lama Pencarian <span class="fw-500"><?= $execution_time ?></span> dalam miliseconds</div>
+                <?php endif; ?>
               </div>
             </div>
 
@@ -82,96 +94,6 @@
                 </div>
               <?php } ?>
             </div>
-
-            <!-- <div class="border-top-light mt-30 pt-30">
-              <div class="row x-gap-10 y-gap-20 justify-between md:justify-center">
-                <div class="col-auto md:order-1">
-                  <button class="button -blue-1 size-40 rounded-full border-light">
-                    <i class="icon-chevron-left text-12"></i>
-                  </button>
-                </div>
-
-                <div class="col-md-auto md:order-3">
-                  <div class="row x-gap-20 y-gap-20 items-center md:d-none">
-
-                    <div class="col-auto">
-
-                      <div class="size-40 flex-center rounded-full">1</div>
-
-                    </div>
-
-                    <div class="col-auto">
-
-                      <div class="size-40 flex-center rounded-full bg-dark-1 text-white">2</div>
-
-                    </div>
-
-                    <div class="col-auto">
-
-                      <div class="size-40 flex-center rounded-full">3</div>
-
-                    </div>
-
-                    <div class="col-auto">
-
-                      <div class="size-40 flex-center rounded-full bg-light-2">4</div>
-
-                    </div>
-
-                    <div class="col-auto">
-
-                      <div class="size-40 flex-center rounded-full">5</div>
-
-                    </div>
-
-                    <div class="col-auto">
-
-                      <div class="size-40 flex-center rounded-full">...</div>
-
-                    </div>
-
-                    <div class="col-auto">
-
-                      <div class="size-40 flex-center rounded-full">20</div>
-
-                    </div>
-
-                  </div>
-
-                  <div class="row x-gap-10 y-gap-20 justify-center items-center d-none md:d-flex">
-
-                    <div class="col-auto">
-
-                      <div class="size-40 flex-center rounded-full">1</div>
-
-                    </div>
-
-                    <div class="col-auto">
-
-                      <div class="size-40 flex-center rounded-full bg-dark-1 text-white">2</div>
-
-                    </div>
-
-                    <div class="col-auto">
-
-                      <div class="size-40 flex-center rounded-full">3</div>
-
-                    </div>
-
-                  </div>
-
-                  <div class="text-center mt-30 md:mt-10">
-                    <div class="text-14 text-light-1">1 – 20 of 300+ properties found</div>
-                  </div>
-                </div>
-
-                <div class="col-auto md:order-2">
-                  <button class="button -blue-1 size-40 rounded-full border-light">
-                    <i class="icon-chevron-right text-12"></i>
-                  </button>
-                </div>
-              </div>
-            </div> -->
           </div>
         </div>
       </div>
