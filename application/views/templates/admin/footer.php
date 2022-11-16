@@ -1,5 +1,5 @@
     <footer class="main-footer">
-      <strong>JELAJAH SULTRA &copy; 2022 </strong>
+      <strong>WisataKuy &copy; 2022 </strong>
     </footer>
   </div>
 

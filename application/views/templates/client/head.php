@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="<?= base_url('assets/client/') ?>css/main.css">
   <link rel="icon" href="<?= base_url('assets/img/logo.png') ?>">
 
-  <title>GoTrip</title>
+  <title>WisataKuy</title>
 </head>
 
 <body>
@@ -24,7 +24,7 @@
       </div>
     </div>
 
-    <div class="preloader__title">Jelajah Sultra</div>
+    <div class="preloader__title">WisataKuy</div>
   </div>
 
   <main>

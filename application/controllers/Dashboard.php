@@ -129,7 +129,7 @@ class Dashboard extends MY_Controller {
             }
             
             $s = 0;
-            while( $s < $len_nama ) {
+            while( $s < $len_nama-2 ) {
                 if( ($len_nama-$s) < $len_keyword ) {
                     break;
                 }

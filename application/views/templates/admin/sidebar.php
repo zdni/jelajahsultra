@@ -1,7 +1,7 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <a href="<?= base_url() ?>" class="brand-link">
       <img src="<?= base_url('assets/') ?>img/logo.png" alt="Logo CAPERTE" class="brand-image" style="opacity: .8">
-      <span class="brand-text font-weight-light">JELAJAH SULTRA</span>
+      <span class="brand-text font-weight-light">WisataKuy</span>
     </a>
 
     <div class="sidebar">
