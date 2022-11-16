@@ -5,7 +5,7 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:jelajahsultra/models/wisata.dart';
+import 'package:wisatakuy/models/wisata.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/tours.dart';
@@ -78,7 +78,7 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
-    var urlPathUpload = 'http://jelajahsultra.info/uploads/wisata/';
+    var urlPathUpload = 'https://jelajahsultra.info/uploads/wisata/';
     
     final allToursProvider = Provider.of<Tours>(context);
 
@@ -191,6 +191,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           return Stack(
                             children: [
                               Container(
+                                margin: const EdgeInsets.only(bottom: 15),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(15.0),
                                   image: DecorationImage(

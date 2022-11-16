@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:jelajahsultra/screens/category_screen.dart';
+import 'package:wisatakuy/screens/category_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -46,7 +46,7 @@ class _DetailScreenState extends State<DetailScreen> {
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
-    var urlPathUpload = 'http://jelajahsultra.info/uploads/wisata/';
+    var urlPathUpload = 'https://jelajahsultra.info/uploads/wisata/';
 
     final allToursProvider = Provider.of<Tours>(context);
 
@@ -309,7 +309,7 @@ class _DetailScreenState extends State<DetailScreen> {
                         child: SingleChildScrollView(
                           scrollDirection: Axis.vertical,
                           child: Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 25.0),
+                            margin: const EdgeInsets.only(left: 25.0, right: 25.0, bottom: 15.0),
                             child: Text(
                               tours[0].keterangan,
                               style: GoogleFonts.getFont(

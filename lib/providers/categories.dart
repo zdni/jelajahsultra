@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import '../models/kategori.dart';
 
 class Categories with ChangeNotifier {
-  var urlAPI = 'http://jelajahsultra.info/api/';
+  var urlAPI = 'https://jelajahsultra.info/api/';
   static List<Kategori> _allKategori = [];
 
   List<Kategori> get allKategori => _allKategori;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:jelajahsultra/screens/about_screen.dart';
-import 'package:jelajahsultra/screens/dashboard_screen.dart';
+import 'package:wisatakuy/screens/about_screen.dart';
+import 'package:wisatakuy/screens/dashboard_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   static const routeName = '/';
@@ -23,7 +23,7 @@ class HomeScreen extends StatelessWidget {
           children: [
             const SizedBox(height: 25),
             Text(
-              'EXPLORE',
+              'WisataKuy',
               style: GoogleFonts.getFont(
                 'Quicksand',
                 color: Colors.white,

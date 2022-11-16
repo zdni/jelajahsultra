@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import '../models/wisata.dart';
 
 class Tours with ChangeNotifier {
-  var urlAPI = 'http://jelajahsultra.info/api/';
+  var urlAPI = 'https://jelajahsultra.info/api/';
   static List<Wisata> _allWisata = [];
   String executionTime = '';
 

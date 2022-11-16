@@ -4,8 +4,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:jelajahsultra/screens/category_screen.dart';
-import 'package:jelajahsultra/screens/detail_screen.dart';
+import 'package:wisatakuy/screens/category_screen.dart';
+import 'package:wisatakuy/screens/detail_screen.dart';
 import 'package:provider/provider.dart';
 
 // screen
@@ -70,7 +70,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
-    var urlPathUpload = 'http://jelajahsultra.info/uploads/wisata/';
+    var urlPathUpload = 'https://jelajahsultra.info/uploads/wisata/';
     
     final allToursProvider = Provider.of<Tours>(context);
     final allCategoriesProvider = Provider.of<Categories>(context);

@@ -3,14 +3,13 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:jelajahsultra/screens/detail_screen.dart';
+import 'package:wisatakuy/screens/detail_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../models/kategori.dart';
 import '../models/wisata.dart';
 import '../providers/categories.dart';
 import '../providers/tours.dart';
-import 'dashboard_screen.dart';
 
 class CategoryScreen extends StatefulWidget {
   static const routeName = '/category';
@@ -104,8 +103,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
-    var height = MediaQuery.of(context).size.height;
-    var urlPathUpload = 'http://jelajahsultra.info/uploads/wisata/';
+    var urlPathUpload = 'https://jelajahsultra.info/uploads/wisata/';
 
     final allToursProvider = Provider.of<Tours>(context);
     final allCategoriesProvider = Provider.of<Categories>(context);
@@ -243,6 +241,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                             return Stack(
                               children: [
                                 Container(
+                                  margin: const EdgeInsets.only(bottom: 15),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(15.0),
                                     image: DecorationImage(
