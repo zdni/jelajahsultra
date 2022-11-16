@@ -105,7 +105,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
-    var urlPathUpload = 'http://192.168.100.188/jelajahsultra/uploads/wisata/';
+    var urlPathUpload = 'http://jelajahsultra.info/uploads/wisata/';
 
     final allToursProvider = Provider.of<Tours>(context);
     final allCategoriesProvider = Provider.of<Categories>(context);

@@ -78,7 +78,7 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
-    var urlPathUpload = 'http://192.168.100.188/jelajahsultra/uploads/wisata/';
+    var urlPathUpload = 'http://jelajahsultra.info/uploads/wisata/';
     
     final allToursProvider = Provider.of<Tours>(context);
 
