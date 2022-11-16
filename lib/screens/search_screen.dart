@@ -1,7 +1,5 @@
 // ignore_for_file: avoid_print
 
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -39,25 +37,31 @@ class _SearchScreenState extends State<SearchScreen> {
 
   Future<void> getTours(Tours toursProvider) async {
     if(toursProvider.totalWisata > 0 && allTours == null) {
-      setState(() {
-        tours = toursProvider.allWisata;
-        allTours = toursProvider;
-      });
+      if(mounted) {
+        setState(() {
+          tours = toursProvider.allWisata;
+          allTours = toursProvider;
+        });
+      }
     }
   }
 
   onchangeInput(string) {
-    setState(() {
-      keyword = string;
-    });
+    if(mounted) {
+      setState(() {
+        keyword = string;
+      });
+    }
   }
 
   search(string) async {
     if(string.length > 0) {
       await Provider.of<Tours>(context, listen: false).notsonaive(string, '');
-      setState(() {
-        tours = allTours.allWisata;
-      });
+      if(mounted) {
+        setState(() {
+          tours = allTours.allWisata;
+        });
+      }
       Fluttertoast.showToast(
         msg: "Waktu Pencarian Not So Naive: ${allTours.executionTime} ms",
         toastLength: Toast.LENGTH_LONG,
@@ -69,9 +73,11 @@ class _SearchScreenState extends State<SearchScreen> {
       );
     } else {
       await Provider.of<Tours>(context, listen: false).initialData();
-      setState(() {
-        tours = allTours.allWisata;
-      });
+      if(mounted) {
+        setState(() {
+          tours = allTours.allWisata;
+        });
+      }
     }
   }
 
@@ -95,7 +101,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   Row(
                     children: [
                       InkWell(
-                        onTap: () => Navigator.pop(context),
+                        onTap: () => Navigator.of(context, rootNavigator: true).pop(),
                         child: const SizedBox(
                           width: 35,
                           height: 35,

@@ -18,7 +18,7 @@ class AboutScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 InkWell(
-                  onTap: () => Navigator.pop(context),
+                  onTap: () => Navigator.of(context, rootNavigator: true).pop(),
                   child: Container(
                     margin: const EdgeInsets.only(left: 25.0),
                     width: 35,

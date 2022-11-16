@@ -46,57 +46,73 @@ class _CategoryScreenState extends State<CategoryScreen> {
   }
 
   Future<void> getTours(Tours toursProvider) async {
-    var kategoriId = ModalRoute.of(context)?.settings.arguments;
-    await Provider.of<Tours>(context, listen: false).getWisataByKategoriId(kategoriId.toString());
+    if(mounted) {
+      var kategoriId = ModalRoute.of(context)?.settings.arguments;
+      await Provider.of<Tours>(context, listen: false).getWisataByKategoriId(kategoriId.toString());
 
-    if (allTours == null) {
-      setState(() {
-        tours = toursProvider.allWisata;
-        allTours = toursProvider;
-      });
+      if (allTours == null) {
+        if(mounted) {
+          setState(() {
+            tours = toursProvider.allWisata;
+            allTours = toursProvider;
+          });
+        }
+      }
     }
   }
 
   Future<void> getCategories(Categories categoriesProvider) async {
-    var kategoriId = ModalRoute.of(context)?.settings.arguments;
-    await Provider.of<Categories>(context, listen: false).getKategori(kategoriId.toString());
-    
-    if (allCategories == null) {
-      setState(() {
-        categories = categoriesProvider.allKategori;
-        allCategories = categoriesProvider;
-      });
+    if(mounted) {
+      var kategoriId = ModalRoute.of(context)?.settings.arguments;
+      await Provider.of<Categories>(context, listen: false).getKategori(kategoriId.toString());
+      
+      if (allCategories == null) {
+        if(mounted) {
+          setState(() {
+            categories = categoriesProvider.allKategori;
+            allCategories = categoriesProvider;
+          });
+        }
+      }
     }
   }
 
   onchangeInput(string) {
-    setState(() {
-      keyword = string;
-    });
+    if(mounted) {
+      setState(() {
+        keyword = string;
+      });
+    }
   }
 
   search(string) async {
-    var kategoriId = ModalRoute.of(context)?.settings.arguments;
-    if(string.length > 0) {
-      await Provider.of<Tours>(context, listen: false).notsonaive(string, kategoriId.toString());
+    if (mounted) {
+      var kategoriId = ModalRoute.of(context)?.settings.arguments;
+      if(string.length > 0) {
+        await Provider.of<Tours>(context, listen: false).notsonaive(string, kategoriId.toString());
 
-      setState(() {
-        tours = allTours.allWisata;
-      });
-      Fluttertoast.showToast(
-        msg: "Waktu Pencarian Not So Naive: ${allTours.executionTime} ms",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 2,
-        backgroundColor: const Color.fromRGBO(8, 129, 163, 1.0),
-        textColor: Colors.white,
-        fontSize: 14,
-      );
-    } else {
-      await Provider.of<Tours>(context, listen: false).getWisataByKategoriId(kategoriId.toString());
-      setState(() {
-        tours = allTours.allWisata;
-      });
+        if(mounted) {
+          setState(() {
+            tours = allTours.allWisata;
+          });
+        }
+        Fluttertoast.showToast(
+          msg: "Waktu Pencarian Not So Naive: ${allTours.executionTime} ms",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 2,
+          backgroundColor: const Color.fromRGBO(8, 129, 163, 1.0),
+          textColor: Colors.white,
+          fontSize: 14,
+        );
+      } else {
+        await Provider.of<Tours>(context, listen: false).getWisataByKategoriId(kategoriId.toString());
+        if(mounted) {
+          setState(() {
+            tours = allTours.allWisata;
+          });
+        }
+      }
     }
   }
   
@@ -128,7 +144,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                     ),
                   ),
                   InkWell(
-                    onTap: () => Navigator.pop(context),
+                    onTap: () => Navigator.of(context, rootNavigator: true).pop(),
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 40,

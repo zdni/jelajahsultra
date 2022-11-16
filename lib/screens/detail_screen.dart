@@ -33,14 +33,18 @@ class _DetailScreenState extends State<DetailScreen> {
   dynamic allTours;
 
   Future<void> getTour(Tours toursProvider) async {
-    final wisataId = ModalRoute.of(context)?.settings.arguments;
-    await Provider.of<Tours>(context).getWisata(wisataId.toString());
+    if(mounted) {
+      final wisataId = ModalRoute.of(context)?.settings.arguments;
+      await Provider.of<Tours>(context).getWisata(wisataId.toString());
 
-    if(toursProvider.totalWisata > 0 && allTours == null) {
-      setState(() {
-        tours = toursProvider.allWisata;
-        allTours = toursProvider;
-      });
+      if(toursProvider.totalWisata > 0 && allTours == null) {
+        if(mounted) {
+          setState(() {
+            tours = toursProvider.allWisata;
+            allTours = toursProvider;
+          });
+        }
+      }
     }
   }
   
@@ -72,7 +76,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   ),
                 ),
                 InkWell(
-                  onTap: () => Navigator.pop(context),
+                  onTap: () => Navigator.of(context, rootNavigator: true).pop(),
                   child: Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 40,
@@ -108,7 +112,7 @@ class _DetailScreenState extends State<DetailScreen> {
                 ),
               ),
               InkWell(
-                onTap: () => Navigator.pop(context),
+                onTap: () => Navigator.of(context, rootNavigator: true).pop(),
                 child: Container(
                   margin: const EdgeInsets.only(left: 25.0, top: 35.0),
                   width: 35,

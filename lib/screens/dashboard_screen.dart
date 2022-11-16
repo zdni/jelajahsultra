@@ -51,19 +51,23 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   Future<void> getTours(Tours toursProvider) async {
     if (toursProvider.totalWisata > 0 && allTours == null) {
-      setState(() {
-        tours = toursProvider.allWisata;
-        allTours = toursProvider;
-      });
+      if(mounted) {
+        setState(() {
+          tours = toursProvider.allWisata;
+          allTours = toursProvider;
+        });
+      }
     }
   }
 
   Future<void> getCategories(Categories categoriesProvider) async {
     if (categoriesProvider.totalKategori > 0 && allCategories == null) {
-      setState(() {
-        categories = categoriesProvider.allKategori;
-        allCategories = categoriesProvider;
-      });
+      if(mounted) {
+        setState(() {
+          categories = categoriesProvider.allKategori;
+          allCategories = categoriesProvider;
+        });
+      }
     }
   }
 
