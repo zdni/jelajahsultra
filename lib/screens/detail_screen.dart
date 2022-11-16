@@ -22,9 +22,8 @@ class _DetailScreenState extends State<DetailScreen> {
 
   @override
   void didChangeDependencies() {
-    final wisataId = ModalRoute.of(context)?.settings.arguments;
     if (isInit) {
-      Provider.of<Tours>(context).getWisata(wisataId.toString());
+      Provider.of<Tours>(context).initialData();
     }
     isInit = false;
     super.didChangeDependencies();
@@ -34,6 +33,9 @@ class _DetailScreenState extends State<DetailScreen> {
   dynamic allTours;
 
   Future<void> getTour(Tours toursProvider) async {
+    final wisataId = ModalRoute.of(context)?.settings.arguments;
+    await Provider.of<Tours>(context).getWisata(wisataId.toString());
+
     if(toursProvider.totalWisata > 0 && allTours == null) {
       setState(() {
         tours = toursProvider.allWisata;
