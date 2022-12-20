@@ -9,23 +9,32 @@ import '../models/wisata.dart';
 class Tours with ChangeNotifier {
   var urlAPI = 'https://jelajahsultra.info/api/';
   static List<Wisata> _allWisata = [];
+  static List<Wisata> _allWisataByRating = [];
+  static bool updateData = false;
   String executionTime = '';
 
   List<Wisata> get allWisata => _allWisata;
+  List<Wisata> get allWisataByRating => _allWisataByRating;
 
   int get totalWisata => _allWisata.length;
 
+  Wisata selectById(int id) => _allWisata.firstWhere((element) => element.id == id);
+
   Future<void> initialData() async {
-    Uri url = Uri.parse(
-        '${urlAPI}ambilSemuaWisata');
+    Uri url = Uri.parse('${urlAPI}ambilSemuaWisata');
+    Uri urlByRating = Uri.parse('${urlAPI}ambilSemuaWisataBerdasarkanRating');
 
     var resultGetData = await http.get(url);
+    var resultGetDataByRating = await http.get(urlByRating);
 
     var dataResponse = json.decode(resultGetData.body) as Map<String, dynamic>;
+    var dataResponseByRating = json.decode(resultGetDataByRating.body) as Map<String, dynamic>;
 
     _allWisata = [];
+    _allWisataByRating = [];
     
     var arrayLength = dataResponse["data"]?.length ?? 0;
+    var arrayByRatingLength = dataResponseByRating["data"]?.length ?? 0;
 
     for (var i = 0; i < arrayLength; i++) {
       var data = dataResponse["data"]?[i];
@@ -41,6 +50,26 @@ class Tours with ChangeNotifier {
           image: data?['image'],
           kategori: data?['kategori'],
           map: data?['map'],
+          rating: data?['rating'],
+        )
+      );
+    }
+
+    for (var i = 0; i < arrayByRatingLength; i++) {
+      var data = dataResponseByRating["data"]?[i];
+      _allWisataByRating.add(
+        Wisata(
+          id: int.parse(data?['id']), 
+          kategoriId: int.parse(data?['kategori_id']), 
+          nama: data?['nama'], 
+          jamOperasional: data?['jam_operasional'], 
+          fasilitas: data?['fasilitas'], 
+          lokasi: data?['lokasi'], 
+          keterangan: data?['keterangan'], 
+          image: data?['image'],
+          kategori: data?['kategori'],
+          map: data?['map'],
+          rating: data?['rating'],
         )
       );
     }
@@ -71,6 +100,7 @@ class Tours with ChangeNotifier {
           image: data?['image'],
           kategori: data?['kategori'],
           map: data?['map'],
+          rating: data?['rating'],
         )
       );
     }
@@ -99,6 +129,7 @@ class Tours with ChangeNotifier {
           keterangan: data?['keterangan'], 
           image: data?['image'],
           map: data?['map'],
+          rating: data?['rating'],
           kategori: data?['kategori']
         )
       );
@@ -129,9 +160,34 @@ class Tours with ChangeNotifier {
           keterangan: data?['keterangan'], 
           image: data?['image'],
           map: data?['map'],
+          rating: data?['rating'],
           kategori: data?['kategori']
         )
       );
+    }
+  }
+
+  Future<void> likeWisata(int id) async {
+    Uri url = Uri.parse('${urlAPI}likeWisata/$id');
+    
+    var resultGetData = await http.get(url);
+    var dataResponse = json.decode(resultGetData.body) as Map<String, dynamic>;
+    var arrayLength = dataResponse['data']?.length ?? 0;
+
+    if( arrayLength > 0 ) {
+      updateData = true;
+    }
+  }
+
+  Future<void> dislikeWisata(int id) async {
+    Uri url = Uri.parse('${urlAPI}dislikeWisata/$id');
+    
+    var resultGetData = await http.get(url);
+    var dataResponse = json.decode(resultGetData.body) as Map<String, dynamic>;
+    var arrayLength = dataResponse['data']?.length ?? 0;
+
+    if( arrayLength > 0 ) {
+      updateData = true;
     }
   }
 }

@@ -1,10 +1,11 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/link.dart';
 import 'package:wisatakuy/screens/category_screen.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../models/wisata.dart';
 import '../providers/tours.dart';
@@ -19,11 +20,77 @@ class DetailScreen extends StatefulWidget {
 
 class _DetailScreenState extends State<DetailScreen> {
   bool isInit = true;
+  @override
+  void initState() {
+    super.initState();
+    init();
+  }
+
+  Future init() async {
+    setPreference('a');
+  }
+ 
+  bool isFavorite = false;
+  Future<void> setPreference(String favorite) async {
+    final prefs = await SharedPreferences.getInstance();
+    final List<String>? favorites = prefs.getStringList('favorites');
+    if (isFavorite) {
+      favorites?.add(favorite);
+    } else {
+      favorites?.remove(favorite);
+    }
+    print(favorites);
+    var f = favorites;
+    f ??= [];
+    print(f);
+    await prefs.setStringList('favorites', f);
+  }
+
+  Future<void> getPreference(String id) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    if (prefs.containsKey('favorites')) {
+      final List<String>? favorites = prefs.getStringList('favorites');
+      if (favorites != null) {
+        if (favorites.contains(id)) {
+          setState(() {
+            isFavorite = true;
+          });
+        }
+      }
+    }
+  }
+
+  likeWisata(id) async {
+    if(id != null) {
+      await Provider.of<Tours>(context, listen: false).likeWisata(id);
+      if(mounted) {
+        setState(() {
+          isFavorite = true;
+          setPreference(id.toString());
+        });
+      }
+    } 
+  }
+
+  dislikeWisata(id) async {
+    if(id != null) {
+      await Provider.of<Tours>(context, listen: false).dislikeWisata(id);
+      if(mounted) {
+        setState(() {
+          isFavorite = false;
+          setPreference(id.toString());
+        });
+      }
+    } 
+  }
 
   @override
-  void didChangeDependencies() {
+  void didChangeDependencies() async {
+    final wisataId = ModalRoute.of(context)?.settings.arguments;
     if (isInit) {
-      Provider.of<Tours>(context).initialData();
+      getPreference(wisataId.toString());
+      Provider.of<Tours>(context, listen: false).initialData();
     }
     isInit = false;
     super.didChangeDependencies();
@@ -50,6 +117,7 @@ class _DetailScreenState extends State<DetailScreen> {
   
   @override
   Widget build(BuildContext context) {
+    final wisataId = ModalRoute.of(context)?.settings.arguments;
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     var urlPathUpload = 'https://jelajahsultra.info/uploads/wisata/';
@@ -109,6 +177,26 @@ class _DetailScreenState extends State<DetailScreen> {
                     image: NetworkImage("$urlPathUpload${tours[0].image}"),
                     fit: BoxFit.cover,
                   )
+                ),
+              ),
+              InkWell(
+                onTap: isFavorite ? () => dislikeWisata(wisataId) : () => likeWisata(wisataId),
+                child: Container(
+                  margin: EdgeInsets.only(left: (width-60), top: 35.0),
+                  width: 35,
+                  height: 35,
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(35))
+                  ),
+                  child: isFavorite ? Icon(
+                    Icons.favorite,
+                    size: 15.0,
+                    color: Colors.red[600],
+                  ) : const Icon(
+                    Icons.favorite_border_rounded,
+                    size: 15.0,
+                  ),
                 ),
               ),
               InkWell(
@@ -227,30 +315,32 @@ class _DetailScreenState extends State<DetailScreen> {
                         ),
                       ),
                       const SizedBox(height: 8),
-                      InkWell(
-                        onTap: () async {
-                          Uri url = Uri.parse(tours[0].map);
-                          if (!await launchUrl(url)) {
-                            throw 'Could not launch $url';
-                          }
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.only(left: 25),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8.0),
-                            border: Border.all(
-                              color: const Color.fromRGBO(3, 169, 251, 1.0)
+                      Link(
+                        target: LinkTarget.blank,
+                        uri: Uri.parse(tours[0].map),
+                        builder: (context, followLink) => InkWell(
+                          customBorder: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0)
+                          ),
+                          onTap: followLink,
+                          child: Container(
+                            margin: const EdgeInsets.only(left: 25),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8.0),
+                              border: Border.all(
+                                color: const Color.fromRGBO(3, 169, 251, 1.0)
+                              ),
                             ),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 15,
-                            vertical: 10,
-                          ),
-                          child: Text(
-                            'Buka di Map',
-                            style: GoogleFonts.getFont(
-                              'Quicksand',
-                              fontSize: 14,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 15,
+                              vertical: 10,
+                            ),
+                            child: Text(
+                              'Buka di Map',
+                              style: GoogleFonts.getFont(
+                                'Quicksand',
+                                fontSize: 14,
+                              ),
                             ),
                           ),
                         ),

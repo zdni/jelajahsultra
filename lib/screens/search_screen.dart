@@ -132,17 +132,15 @@ class _SearchScreenState extends State<SearchScreen> {
                       Expanded(
                         child: TextField(
                           onChanged: (text) {
-                            // searh(text, allWordsProvider.allWord);
                             onchangeInput(text);
+                            if( text.length > 1 ) {
+                              search(keyword);
+                            }
                           },
                           decoration: const InputDecoration(
                             hintText: 'Jelajahi...',
                             focusColor: Color.fromRGBO(63, 89, 125, 1.0),
-                            contentPadding:
-                                EdgeInsets.symmetric(horizontal: 20.0),
-                            // suffixIcon: Icon(
-                            //   Icons.search,
-                            // ),
+                            contentPadding: EdgeInsets.symmetric(horizontal: 20.0),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
                                 Radius.circular(15),
@@ -177,7 +175,7 @@ class _SearchScreenState extends State<SearchScreen> {
                               ),
                           ),
                           child: const Icon(
-                            Icons.search,
+                            Icons.refresh_rounded,
                             color: Colors.white,
                             size: 24,
                           ),
