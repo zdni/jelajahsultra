@@ -49,6 +49,14 @@ class Api extends MY_Controller {
         ]);
     }
 
+    public function ambilSemuaWisataBerdasarkanRating()
+    {
+        $wisata = $this->wisata_model->wisata_berdasarkan_rating()->result();
+        echo json_encode([
+            'data' => $wisata
+        ]);
+    }
+
     public function ambilWisata( $id = NULL )
     {
         if( !$id ) {
@@ -89,6 +97,77 @@ class Api extends MY_Controller {
         echo json_encode([
             'data' => $wisata
         ]);
+    }
+
+    public function likeWisata( $wisata_id = NULL ) 
+    {
+        if( !$wisata_id ) {
+            echo json_encode([
+                'data' => []
+            ]);
+            return;
+        }
+
+        $wisata = $this->wisata_model->wisata( $wisata_id )->row();
+        if( !$wisata ) {
+            echo json_encode([
+                'data' => []
+            ]);
+            return;
+        }
+
+        $result = $this->wisata_model->ubah( $wisata_id, ['rating' => ($wisata->rating + 1)] );
+        if( !$result ) {
+            echo json_encode([
+                'data' => []
+            ]);
+            return;
+        }
+
+        $wisata = $this->wisata_model->wisata( $wisata_id )->row();
+        echo json_encode([
+            'data' => $wisata
+        ]);
+        return;
+    }
+
+    public function dislikeWisata( $wisata_id = NULL ) 
+    {
+        if( !$wisata_id ) {
+            echo json_encode([
+                'data' => []
+            ]);
+            return;
+        }
+
+        $wisata = $this->wisata_model->wisata( $wisata_id )->row();
+        if( !$wisata ) {
+            echo json_encode([
+                'data' => []
+            ]);
+            return;
+        }
+
+        if( $wisata->rating <= 0 ) {
+            echo json_encode([
+                'data' => []
+            ]);
+            return;
+        }
+
+        $result = $this->wisata_model->ubah( $wisata_id, ['rating' => ($wisata->rating - 1)] );
+        if( !$result ) {
+            echo json_encode([
+                'data' => []
+            ]);
+            return;
+        }
+
+        $wisata = $this->wisata_model->wisata( $wisata_id )->row();
+        echo json_encode([
+            'data' => $wisata
+        ]);
+        return;
     }
 
     public function notsonaive()
@@ -142,7 +221,6 @@ class Api extends MY_Controller {
                 if( ($len_nama-$s) < $len_keyword ) {
                     break;
                 }
-    
                 if( $arr_keyword[0] == $arr_nama[$s] && $arr_keyword[1] == $arr_nama[$s+1] ) {
                     $find = true;
                     for ($j=0; $j < $len_keyword; $j++) { 
@@ -157,9 +235,11 @@ class Api extends MY_Controller {
                     }
                     $s += $ell;
                 }
+                if( $len_nama-2 <= $s ) break;
                 if( $arr_keyword[0] == $arr_nama[$s] && $arr_keyword[1] != $arr_nama[$s+1] ) {
                     $s += $ell;
                 }
+                if( $len_nama-2 <= $s ) break;
                 if( $arr_keyword[0] != $arr_nama[$s] && $arr_keyword[1] != $arr_nama[$s+1] ) {
                     $s += $k;
                 } else {

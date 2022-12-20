@@ -28,6 +28,10 @@
                     <b>Jam Operasional</b>
                     <span class="badge badge-success px-2 ml-4"><?= $data->jam_operasional ?></span>
                   </div>
+                  <div class="col-12">
+                    <b>Rating</b>
+                    <span class="badge badge-success px-2 ml-4"><?= $data->rating ?></span>
+                  </div>
                 </div>
               </div>
             </div>

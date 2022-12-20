@@ -44,6 +44,12 @@ class Wisata_model extends CI_Model {
         return $this->db->get( $this->_table );
     }
 
+    public function wisata_berdasarkan_rating()
+    {
+        $this->db->order_by('rating', 'DESC');
+        return $this->wisata();
+    }
+
     public function wisata_berdasarkan_kategori( $kategori_id = NULL )
     {
         if( $kategori_id ) $this->db->where( $this->_table . '.kategori_id', $kategori_id);
