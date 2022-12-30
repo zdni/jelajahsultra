@@ -45,7 +45,8 @@ class Api extends MY_Controller {
     {
         $wisata = $this->wisata_model->wisata()->result();
         echo json_encode([
-            'data' => $wisata
+            'data' => $wisata,
+            'rekomendasi' => ''
         ]);
     }
 
@@ -53,7 +54,8 @@ class Api extends MY_Controller {
     {
         $wisata = $this->wisata_model->wisata_berdasarkan_rating()->result();
         echo json_encode([
-            'data' => $wisata
+            'data' => $wisata,
+            'rekomendasi' => ''
         ]);
     }
 
@@ -61,7 +63,8 @@ class Api extends MY_Controller {
     {
         if( !$id ) {
             echo json_encode([
-                'data' => []
+                'data' => [],
+                'rekomendasi' => ''
             ]);
             return;
         }
@@ -69,12 +72,14 @@ class Api extends MY_Controller {
         $wisata = $this->wisata_model->wisata( $id )->row();
         if( !$wisata ) {
             echo json_encode([
-                'data' => []
+                'data' => [],
+                'rekomendasi' => ''
             ]);
             return;
         }
         echo json_encode([
-            'data' => [$wisata]
+            'data' => [$wisata],
+            'rekomendasi' => ''
         ]);
     }
 
@@ -82,7 +87,8 @@ class Api extends MY_Controller {
     {
         if( !$kategori_id ) {
             echo json_encode([
-                'data' => []
+                'data' => [],
+                'rekomendasi' => ''
             ]);
             return;
         }
@@ -90,12 +96,14 @@ class Api extends MY_Controller {
         $wisata = $this->wisata_model->wisata_berdasarkan_kategori( $kategori_id )->result();
         if( !$wisata ) {
             echo json_encode([
-                'data' => []
+                'data' => [],
+                'rekomendasi' => ''
             ]);
             return;
         }
         echo json_encode([
-            'data' => $wisata
+            'data' => $wisata,
+            'rekomendasi' => ''
         ]);
     }
 
@@ -178,6 +186,10 @@ class Api extends MY_Controller {
         $len_keyword = count($arr_keyword);
         $k = 0;
 
+        // rekomendasi
+        $hasil_rekomendasi = '';
+        $nilai_rekomendasi = 0;
+
         if( $len_keyword == 0 ) {
             echo json_encode([
                 'data' => []
@@ -209,6 +221,13 @@ class Api extends MY_Controller {
         $time_start = microtime(true); 
         foreach ($datas as $data) {
             $nama = strtolower($data->nama);
+            
+            $result_jaro_winkler = $this->jaro_winkler( $keyword, $nama );
+            if( $result_jaro_winkler > $nilai_rekomendasi ) {
+                $hasil_rekomendasi = $nama;
+                $nilai_rekomendasi = $result_jaro_winkler;
+            }
+
             $arr_nama = str_split( $nama );
             $len_nama = count( $arr_nama );
             
@@ -249,12 +268,80 @@ class Api extends MY_Controller {
         }
 		$time_end = microtime(true);
 		$execution_time = ($time_end - $time_start); // dalam miliseconds
+
+        $rekomendasi = '';
+        if( !count( $wisata ) ) $rekomendasi = $hasil_rekomendasi;
         
         echo json_encode((object) [
             'execution_time' => $execution_time,
             'data' => $wisata,
             'keyword' => $keyword,
+            'rekomendasi' => $rekomendasi,
         ]);
     }
 
+    public function jaro( $search = NULL, $value = NULL )
+    {
+        $len_search = strlen( $search );
+        $len_value = strlen( $value );
+
+        $distance = (int) floor ((max($len_search, $len_value))/2)-1;
+        $commons_search = $this->common_characters( $search, $value, $distance );
+        $commons_value = $this->common_characters( $search, $value, $distance );
+	
+        if( ($commons_search_len = strlen( $commons_search )) == 0) return 0;
+        if( ($commons_value_len = strlen( $commons_value )) == 0) return 0;
+
+        // calculate transpositions
+        $transpositions = 0;
+        $upper_bound = min( $commons_search_len, $commons_value_len );
+
+        for( $i = 0; $i < $upper_bound; $i++ ) {
+            if( $commons_search[$i] != $commons_value[$i] ) $transpositions++;
+        }
+        $transpositions /= 2.0;
+
+        return ( ($upper_bound/($len_search) + $upper_bound/($len_value) + ($upper_bound - $transpositions)/($commons_search_len)) / 3.0 );
+    }
+
+    public function common_characters( $search, $value, $distance )
+    {
+        $len_search = strlen( $search );
+        $len_value = strlen( $value );
+        $common_characters = '';
+        $matching = 0;
+
+        for ($i = 0; $i < $len_search; $i++) { 
+            $no_match = true;
+            for ($j = 0; $no_match && $j < $len_value; $j++) { 
+                if( ($value[$j] == $search[$i]) && (abs($j-$i) <= $distance) ) {
+                    $no_match = false;
+                    $matching++;
+                    $common_characters .= $search[$i];
+                }
+            }
+        }
+        return $common_characters;
+    }
+
+    public function prefix_length( $search, $value, $MINPREFIXLENGTH = 4 )
+    {
+        $n = min( array( $MINPREFIXLENGTH, strlen($search), strlen($value) ) );
+        for ($i = 0; $i < $n; $i++) { 
+            if( $search[$i] != $value[$i] ) return $i;
+        }
+        return $n;
+    }
+
+    public function jaro_winkler( $search = NULL, $value = NULL )
+    {
+        if( !$search || !$value ) return 0;
+        
+        $PREFIXSCALE = 0.1;
+        $jaro_distance = $this->jaro( $search, $value );
+        $prefix_length = $this->prefix_length( $search, $value );
+        $score = round( ($jaro_distance + ($prefix_length * $PREFIXSCALE * (1.0 - $jaro_distance))) * 100, 2);
+        
+        return $score;
+    }
 }
