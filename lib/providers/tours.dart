@@ -12,6 +12,7 @@ class Tours with ChangeNotifier {
   static List<Wisata> _allWisataByRating = [];
   static bool updateData = false;
   String executionTime = '';
+  String recommendation = '';
 
   List<Wisata> get allWisata => _allWisata;
   List<Wisata> get allWisataByRating => _allWisataByRating;
@@ -164,6 +165,10 @@ class Tours with ChangeNotifier {
           kategori: data?['kategori']
         )
       );
+    }
+
+    if( arrayLength == 0) {
+      recommendation = dataResponse['rekomendasi'];
     }
   }
 

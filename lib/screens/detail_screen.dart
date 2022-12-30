@@ -370,6 +370,27 @@ class _DetailScreenState extends State<DetailScreen> {
                       Container(
                         margin: const EdgeInsets.only(left: 25.0),
                         child: Text(
+                          'Rating',
+                          style: GoogleFonts.getFont(
+                            'Quicksand',
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),  
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(left: 25.0),
+                        child: Text(
+                          '${tours[0].rating} Suka',
+                          style: GoogleFonts.getFont(
+                            'Quicksand',
+                          ),  
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Container(
+                        margin: const EdgeInsets.only(left: 25.0),
+                        child: Text(
                           'Fasilitas',
                           style: GoogleFonts.getFont(
                             'Quicksand',

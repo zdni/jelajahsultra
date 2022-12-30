@@ -33,6 +33,7 @@ class _SearchScreenState extends State<SearchScreen> {
   String keyword = '';
 
   List<Wisata> tours = [];
+  String recommendation = '';
   dynamic allTours;
 
   Future<void> getTours(Tours toursProvider) async {
@@ -60,7 +61,9 @@ class _SearchScreenState extends State<SearchScreen> {
       if(mounted) {
         setState(() {
           tours = allTours.allWisata;
+          recommendation = allTours.recommendation;
         });
+        print( recommendation );
       }
       Fluttertoast.showToast(
         msg: "Waktu Pencarian Not So Naive: ${allTours.executionTime} ms",
@@ -186,9 +189,19 @@ class _SearchScreenState extends State<SearchScreen> {
                   const SizedBox(height: 15),
                   Expanded(
                     child: (tours.isEmpty)
-                      ? const Center(
-                        child: Text('Tidak ada Data Wisata'),
-                      ) 
+                      ? ( recommendation == '' ) ? const Center(
+                          child: Text('Tidak ada Data Wisata'),
+                        ) : Center(
+                          child: Text(
+                            'Mungkin yang Anda maksud adalah `$recommendation`',
+                            style: GoogleFonts.getFont(
+                              'Quicksand',
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        )
                       : ListView.builder(
                         itemCount: tours.length,  
                         itemBuilder: (context, index) {

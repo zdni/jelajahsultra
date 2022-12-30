@@ -35,6 +35,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   String keyword = '';
 
   List<Wisata> tours = [];
+  String recommendation = '';
   dynamic allTours;
   
   List<Kategori> categories = [];
@@ -86,7 +87,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
   }
 
   search(string) async {
-    if (mounted) {
       var kategoriId = ModalRoute.of(context)?.settings.arguments;
       if(string.length > 0) {
         await Provider.of<Tours>(context, listen: false).notsonaive(string, kategoriId.toString());
@@ -113,7 +113,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
           });
         }
       }
-    }
   }
   
   @override
@@ -209,6 +208,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
                         child: TextField(
                           onChanged: (text) {
                             onchangeInput(text);
+                            if( text.length > 1 ) {
+                              search(keyword);
+                            }
                           },
                           decoration: const InputDecoration(
                             hintText: 'Jelajahi...',
@@ -225,6 +227,17 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       const SizedBox(width: 10),
                       InkWell(
                         onTap: () {
+                          if( keyword == '' ) {
+                            Fluttertoast.showToast(
+                              msg: "Tidak ada keyword pencarian",
+                              toastLength: Toast.LENGTH_LONG,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 2,
+                              backgroundColor: const Color.fromRGBO(8, 129, 163, 1.0),
+                              textColor: Colors.white,
+                              fontSize: 14,
+                            );
+                          }
                           search(keyword);
                         },
                         child: Container(
@@ -248,9 +261,19 @@ class _CategoryScreenState extends State<CategoryScreen> {
                   const SizedBox(height: 15),
                     Expanded(
                       child: (tours.isEmpty) 
-                        ? Center(
+                        ? ( recommendation == '' ) ? Center(
                           child: Text('Tidak ada Data Wisata pada kategori ${categories[0].nama}'),
-                        ) 
+                        ) : Center(
+                          child: Text(
+                            'Mungkin yang Anda maksud adalah `$recommendation`',
+                            style: GoogleFonts.getFont(
+                              'Quicksand',
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        )
                         : ListView.builder(
                           itemCount: tours.length,
                           itemBuilder: (context, index) {
