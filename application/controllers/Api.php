@@ -196,16 +196,10 @@ class Api extends MY_Controller {
             ]);
             return;
         }
-        if( $len_keyword == 1 ) {
-            $k = 1;
-        }
+        if( $len_keyword == 1 ) $k = 1;
         if( $len_keyword > 1 ) {
-            $k = 1;
-            if( $arr_keyword[0] != $arr_keyword[1] ) {
-                $ell = 2;
-            } else {
-                $ell = 1;
-            }
+            $k = $ell = 1;
+            if( $arr_keyword[0] != $arr_keyword[1] ) $ell = 2;
         }
 
         if( $k == 0 ) {
@@ -221,6 +215,7 @@ class Api extends MY_Controller {
         $time_start = microtime(true); 
         foreach ($datas as $data) {
             $nama = strtolower($data->nama);
+            $keterangan = strtolower($data->keterangan);
             
             $result_jaro_winkler = $this->jaro_winkler( $keyword, $nama );
             if( $result_jaro_winkler > $nilai_rekomendasi ) {
@@ -231,40 +226,43 @@ class Api extends MY_Controller {
             $arr_nama = str_split( $nama );
             $len_nama = count( $arr_nama );
             
-            if( $len_keyword > $len_nama ) {
-                continue;
-            }
+            // if( $len_keyword > $len_nama ) continue;
             
-            $s = 0;
-            while( $s < $len_nama-2 ) {
-                if( ($len_nama-$s) < $len_keyword ) {
-                    break;
-                }
-                if( $arr_keyword[0] == $arr_nama[$s] && $arr_keyword[1] == $arr_nama[$s+1] ) {
-                    $find = true;
-                    for ($j=0; $j < $len_keyword; $j++) { 
-                        if( $arr_keyword[$j] != $arr_nama[$s+$j] ) {
-                            $find = false;
-                            break;
-                        }
-                    }
-                    if( $find ) {
-                        $wisata[] = $data;
-                        break;
-                    }
-                    $s += $ell;
-                }
-                if( $len_nama-2 <= $s ) break;
-                if( $arr_keyword[0] == $arr_nama[$s] && $arr_keyword[1] != $arr_nama[$s+1] ) {
-                    $s += $ell;
-                }
-                if( $len_nama-2 <= $s ) break;
-                if( $arr_keyword[0] != $arr_nama[$s] && $arr_keyword[1] != $arr_nama[$s+1] ) {
-                    $s += $k;
-                } else {
-                    $s += $k;
-                }
-            }
+            // $s = 0;
+            // while( $s < $len_nama-2 ) {
+            //     if( ($len_nama-$s) < $len_keyword ) {
+            //         break;
+            //     }
+            //     if( $arr_keyword[0] == $arr_nama[$s] && $arr_keyword[1] == $arr_nama[$s+1] ) {
+            //         $find = true;
+            //         for ($j=0; $j < $len_keyword; $j++) { 
+            //             if( $arr_keyword[$j] != $arr_nama[$s+$j] ) {
+            //                 $find = false;
+            //                 break;
+            //             }
+            //         }
+            //         if( $find ) {
+            //             $wisata[] = $data;
+            //             break;
+            //         }
+            //         $s += $ell;
+            //     }
+            //     if( $len_nama-2 <= $s ) break;
+            //     if( $arr_keyword[0] == $arr_nama[$s] && $arr_keyword[1] != $arr_nama[$s+1] ) {
+            //         $s += $ell;
+            //     }
+            //     if( $len_nama-2 <= $s ) break;
+            //     if( $arr_keyword[0] != $arr_nama[$s] && $arr_keyword[1] != $arr_nama[$s+1] ) {
+            //         $s += $k;
+            //     } else {
+            //         $s += $k;
+            //     }
+            // }
+            $result = $this->_notsonaive( $k, $ell, $keyword, $keterangan );
+            if( !$result ) $result = $this->_notsonaive( $k, $ell, $keyword, $keterangan );
+            
+            if( $result ) $wisata[] = $data;
+                
         }
 		$time_end = microtime(true);
 		$execution_time = ($time_end - $time_start); // dalam miliseconds
@@ -278,6 +276,44 @@ class Api extends MY_Controller {
             'keyword' => $keyword,
             'rekomendasi' => $rekomendasi,
         ]);
+    }
+
+    public function _notsonaive( $k, $ell, $keyword = NULL, $data = NULL )
+    {
+        if( !$keyword || !$data ) return FALSE;
+        
+        $arr_data = str_split( $data );
+        $len_data = count( $arr_data );
+        $arr_keyword = str_split($keyword);
+        $len_keyword = count($arr_keyword);
+
+        $s = 0;
+        while( $s < $len_data-2 ) {
+            if( ($len_data-$s) < $len_keyword ) break;
+            
+            if( $arr_keyword[0] == $arr_data[$s] && $arr_keyword[1] == $arr_data[$s+1] ) {
+                $find = true;
+                for ($j=0; $j < $len_keyword; $j++) { 
+                    if( $arr_keyword[$j] != $arr_data[$s+$j] ) {
+                        $find = false;
+                        break;
+                    }
+                }
+                if( $find ) return TRUE;
+                $s += $ell;
+            }
+            
+            if( $len_data-2 <= $s ) break;
+            if( $arr_keyword[0] == $arr_data[$s] && $arr_keyword[1] != $arr_data[$s+1] ) $s += $ell;
+            if( $len_data-2 <= $s ) break;
+
+            if( $arr_keyword[0] != $arr_data[$s] && $arr_keyword[1] != $arr_data[$s+1] ) {
+                $s += $k;
+            } else {
+                $s += $k;
+            }
+        }
+        return FALSE;
     }
 
     public function jaro( $search = NULL, $value = NULL )
